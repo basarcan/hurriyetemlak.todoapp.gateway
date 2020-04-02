@@ -5,8 +5,10 @@ import com.hurriyetemlak.todoapp.gateway.model.SignInRequest;
 import com.hurriyetemlak.todoapp.gateway.model.SignInResponse;
 import com.hurriyetemlak.todoapp.gateway.model.SignUpRequestModel;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         value = "userClient",
@@ -20,4 +22,7 @@ public interface UserClient {
 
     @PostMapping(value = "/sign-in")
     SignInResponse signIn(SignInRequest signInRequest);
+
+    @GetMapping(value = "/verify")
+    String verify(@RequestParam String token);
 }

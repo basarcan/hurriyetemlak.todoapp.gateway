@@ -1,6 +1,7 @@
 package com.hurriyetemlak.todoapp.gateway.controller;
 
 import com.hurriyetemlak.todoapp.gateway.model.SignInRequest;
+import com.hurriyetemlak.todoapp.gateway.model.SignInResponse;
 import com.hurriyetemlak.todoapp.gateway.model.SignUpRequestModel;
 import com.hurriyetemlak.todoapp.gateway.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping(value = "sign-in")
-    public void signIn(@RequestBody SignInRequest signInRequest){
-        userService.signIn(signInRequest);
+    public SignInResponse signIn(@RequestBody SignInRequest signInRequest){
+        return userService.signIn(signInRequest);
     }
 
     @GetMapping(value = "verify")

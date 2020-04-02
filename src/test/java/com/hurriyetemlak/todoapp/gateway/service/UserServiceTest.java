@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,7 +30,7 @@ public class UserServiceTest {
         signUpRequestModel.setEmail("email@email.com");
         signUpRequestModel.setPassword("password");
         signUpRequestModel.setFirstName("firstName");
-        signUpRequestModel.setFirstName("lastName");
+        signUpRequestModel.setLastName("lastName");
 
         //when
         userService.signUp(signUpRequestModel);
@@ -55,6 +56,7 @@ public class UserServiceTest {
         signInResponse.setFirstName("firstName");
         signInResponse.setLastName("lastName");
         signInResponse.setToken("token");
+        given(userClient.signIn(signInRequest)).willReturn(signInResponse);
 
         //when
         SignInResponse response = userService.signIn(signInRequest);
@@ -69,5 +71,17 @@ public class UserServiceTest {
         assertThat(response.getFirstName()).isEqualTo("firstName");
         assertThat(response.getLastName()).isEqualTo("lastName");
         assertThat(response.getToken()).isEqualTo("token");
+    }
+
+    @Test
+    public void it_should_verify() {
+        //given
+        given(userClient.verify("token")).willReturn("userId");
+
+        //when
+        String response = userService.verify("token");
+
+        //then
+        assertThat(response).isEqualTo("userId");
     }
 }

@@ -1,6 +1,7 @@
 package com.hurriyetemlak.todoapp.gateway.service;
 
 import com.hurriyetemlak.todoapp.gateway.client.TaskClient;
+import com.hurriyetemlak.todoapp.gateway.converter.TaskConverter;
 import com.hurriyetemlak.todoapp.gateway.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,12 @@ public class TaskServiceTest {
     @Mock
     private TaskClient taskClient;
 
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private TaskConverter taskConverter;
+
 
     @Test
     public void it_should_add_task_to_list() {
@@ -38,13 +45,15 @@ public class TaskServiceTest {
         taskAddRequest.setTaskContent("taskContent");
         taskAddRequest.setTaskPriority((byte) 0);
         taskAddRequest.setTaskFavorite(false);
+        given(userService.verify("token")).willReturn("userId");
+        given(taskConverter.convertToTaskListAddRequest(taskAddRequest, "userId")).willReturn(new TaskListAddRequest());
 
 
         //when
         taskService.addToList(taskAddRequest);
 
         //then
-        verify(taskClient).addTask(any(TaskAddRequest.class));
+        verify(taskClient).addTask(any(TaskListAddRequest.class));
     }
 
     @Test
@@ -59,13 +68,16 @@ public class TaskServiceTest {
         taskUpdateRequest.setTaskContent("taskContent");
         taskUpdateRequest.setTaskPriority((byte) 0);
         taskUpdateRequest.setTaskFavorite(false);
+        taskUpdateRequest.setToken("token");
+        given(userService.verify("token")).willReturn("userId");
+        given(taskConverter.convertToTaskListUpdateRequest(taskUpdateRequest, "userId")).willReturn(new TaskListUpdateRequest());
 
 
         //when
         taskService.updateToList(taskUpdateRequest);
 
         //then
-        verify(taskClient).updateTask(any(TaskUpdateRequest.class));
+        verify(taskClient).updateTask(any(TaskListUpdateRequest.class));
 
     }
 
@@ -74,13 +86,15 @@ public class TaskServiceTest {
         //given
         TaskDeleteRequest taskDeleteRequest = new TaskDeleteRequest();
         taskDeleteRequest.setToken("token");
+        given(userService.verify("token")).willReturn("userId");
+        given(taskConverter.convertToTaskListDeleteRequest(taskDeleteRequest, "userId")).willReturn(new TaskListDeleteItemRequest());
 
 
         //when
         taskService.deleteFromList(taskDeleteRequest);
 
         //then
-        verify(taskClient).deleteTask(any(TaskDeleteRequest.class));
+        verify(taskClient).deleteTask(any(TaskListDeleteItemRequest.class));
 
     }
 
@@ -101,12 +115,13 @@ public class TaskServiceTest {
         model12.setTaskFavorite(false);
         List<TaskListGetUserListsResponse> taskListGetUserListsResponseList = Arrays.asList(model11, model12);
 
+        given(userService.verify("token")).willReturn("userId");
+        given(taskClient.getTaskLists("userId")).willReturn(taskListGetUserListsResponseList);
 
-        given(taskClient.getTaskLists("0")).willReturn(taskListGetUserListsResponseList);
 
 
         //when
-        List<TaskListGetUserListsResponse> taskListGetListsResponseListUser = taskService.getTaskLists("0");
+        List<TaskListGetUserListsResponse> taskListGetListsResponseListUser = taskService.getTaskLists("token");
 
         //then
         assertThat(taskListGetListsResponseListUser.get(0).getTaskId()).isEqualTo("1");

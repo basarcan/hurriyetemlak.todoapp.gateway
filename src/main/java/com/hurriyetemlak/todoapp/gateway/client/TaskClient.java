@@ -1,11 +1,12 @@
 package com.hurriyetemlak.todoapp.gateway.client;
 
 import com.hurriyetemlak.todoapp.gateway.configuration.ClientConfiguration;
-import com.hurriyetemlak.todoapp.gateway.model.TaskAddRequest;
-import com.hurriyetemlak.todoapp.gateway.model.TaskDeleteRequest;
+import com.hurriyetemlak.todoapp.gateway.model.TaskListAddRequest;
+import com.hurriyetemlak.todoapp.gateway.model.TaskListDeleteItemRequest;
 import com.hurriyetemlak.todoapp.gateway.model.TaskListGetUserListsResponse;
-import com.hurriyetemlak.todoapp.gateway.model.TaskUpdateRequest;
+import com.hurriyetemlak.todoapp.gateway.model.TaskListUpdateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,11 +16,15 @@ import java.util.List;
         configuration = ClientConfiguration.class
 )
 public interface TaskClient {
-    void updateTask(TaskUpdateRequest taskUpdateRequest);
+    @PostMapping(value = "task")
+    void addTask(TaskListAddRequest taskAddRequest);
 
-    void addTask(TaskAddRequest taskAddRequest);
+    @PutMapping(value = "task")
+    void updateTask(TaskListUpdateRequest taskUpdateRequest);
 
-    void deleteTask(TaskDeleteRequest taskDeleteRequest);
+    @DeleteMapping(value = "task")
+    void deleteTask(TaskListDeleteItemRequest taskDeleteRequest);
 
-    List<TaskListGetUserListsResponse> getTaskLists(String userId);
+    @GetMapping(value = "task")
+    List<TaskListGetUserListsResponse> getTaskLists(@RequestParam String userId);
 }

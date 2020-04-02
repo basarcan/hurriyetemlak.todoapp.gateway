@@ -42,9 +42,9 @@ public class TaskController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskListGetUserListsResponse> getTaskLists(@RequestParam String userId)
+    public List<TaskListGetUserListsResponse> getTaskLists(@RequestParam String token)
     {
-        return taskService.getTaskLists(userId);
+        return taskService.getTaskLists(token);
     }
 
 

@@ -24,6 +24,6 @@ public class UserService {
     }
 
     public String verify(String token) {
-        return null;
+        return userClient.verify(token);
     }
 }
