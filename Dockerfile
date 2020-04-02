@@ -1,6 +1,7 @@
 FROM adoptopenjdk:11-jdk-openj9-bionic AS build-project
 ADD . ./gateway
 WORKDIR /gateway
+RUN chmod +x mvnw
 RUN ./mvnw clean install -DskipTests
 
 FROM adoptopenjdk:11-jdk-openj9-bionic
