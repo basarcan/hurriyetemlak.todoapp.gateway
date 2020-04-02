@@ -3,12 +3,12 @@ package com.hurriyetemlak.todoapp.gateway.configuration;
 import feign.Request;
 import org.springframework.context.annotation.Bean;
 
-public class UserClientConfiguration {
+public class ClientConfiguration {
     private static final int CONNECT_TIMEOUT_MILLIS = 2000;
     private static final int READ_TIMEOUT_MILLIS = 2000;
 
     @Bean
-    public DefaultErrorDecoder cmsApiClientErrorDecoder() {
+    public DefaultErrorDecoder clientErrorDecoder() {
         return new DefaultErrorDecoder();
     }
 

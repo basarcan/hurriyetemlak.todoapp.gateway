@@ -10,4 +10,4 @@ server:
     min-response-size: 1024
 
 user.client.url: localhost:8081
-todo.client.url: localhost:8082
+task.client.url: localhost:8082
