@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: Hurriyet Emlak Gateway
+
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: application/json
+    min-response-size: 1024
+
+user.client.url: localhost:8081
+todo.client.url: localhost:8082
